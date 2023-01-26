@@ -1,0 +1,19 @@
+{
+  "name": "web-breakout",
+  "version": "1.0.0",
+  "description": "An web based game of breakout",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rvdm2101/web-breakout.git"
+  },
+  "author": "Robin van der Molen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rvdm2101/web-breakout/issues"
+  },
+  "homepage": "https://github.com/rvdm2101/web-breakout#readme"
+}
