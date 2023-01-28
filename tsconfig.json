@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
     "target": "es5",
-    "module": "commonjs",
     "sourceMap": true,
-    "outDir": "dir"
-  }
+    "allowJs": true
+  },
+  "files": [
+    "src/index.ts",
+    "types/type.d.ts"
+  ]
 }
