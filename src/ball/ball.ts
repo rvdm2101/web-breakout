@@ -6,8 +6,8 @@ export const generateBall: TGenerateBall = (canvas, offsetX) => {
   ball.fillStyle = "#f00";
   ball.beginPath();
   ball.arc(
-    offsetX + BALL_SIZE / 2,
-    canvas.height - 50,
+    offsetX - BALL_SIZE / 2,
+    canvas.height - 80,
     BALL_SIZE,
     0,
     2 * Math.PI
