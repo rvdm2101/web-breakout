@@ -1,4 +1,5 @@
 import { generateBricks } from "./bricks/bricks";
+import { generateBall } from "./ball/ball";
 
 /**
  * Create canvas inside the provided container
@@ -19,6 +20,7 @@ const generateGame: TGenerateGame = (elementSelector) => {
   container.appendChild(canvas);
 
   generateBricks(canvas);
+  generateBall(canvas, canvas.width / 2);
 };
 
 export default generateGame;
