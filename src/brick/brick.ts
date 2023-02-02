@@ -11,16 +11,6 @@ export class Brick {
     this.positionY = positionY;
   }
 
-  private clear() {
-    const context = this.canvas.getContext("2d");
-    context.clearRect(
-      this.positionX,
-      this.positionY,
-      BRICK_WIDTH,
-      BRICK_HEIGHT
-    );
-  }
-
   public draw() {
     const context = this.canvas.getContext("2d");
     context.fillStyle = "#f00";

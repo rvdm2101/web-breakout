@@ -1,4 +1,4 @@
-import { Ball } from "../ball";
+import { Ball, BALL_SPEED } from "../ball";
 import { Paddle, PADDLE_FRICTION, PADDLE_SPEED } from "../paddle";
 import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
 import {
@@ -9,26 +9,31 @@ import {
 
 export class Game {
   private paddleMovementX: number = 0;
-  private paddleOffsetX: number;
-  private keys: Record<string, boolean> = {};
-  private canvas: HTMLCanvasElement;
-  private paddle: Paddle;
-  private ball: Ball;
-  private bricks: Brick[] = [];
+  private paddlePositionX: number;
+  private ballPositionX: number;
+  private ballPositionY: number;
+
+  private readonly keys: Record<string, boolean> = {};
+  private readonly canvas: HTMLCanvasElement;
+
+  private readonly paddle: Paddle;
+  private readonly ball: Ball;
+  private readonly bricks: Brick[] = [];
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
 
     // Initialize the paddle in the middle of the screen.
-    this.paddleOffsetX = canvas.width / 2;
-    this.paddle = new Paddle(this.paddleOffsetX, canvas);
+    this.paddlePositionX = canvas.width / 2;
+    this.paddle = new Paddle(canvas);
     // @TODO make 80 a const, and maybe move it to the Ball constructor
-    this.ball = new Ball(canvas, canvas.width / 2, canvas.height - 80);
 
-    this.addControls();
+    this.ballPositionX = canvas.width / 2;
+    this.ballPositionY = canvas.height - 80;
+    this.ball = new Ball(canvas);
 
-    // Generating the bricks only needs to happen once. After that we only need to remove the bricks that are hit
     this.generateBricks();
+    this.addControls();
     this.gameLoop();
   }
 
@@ -68,14 +73,26 @@ export class Game {
     }
 
     this.paddleMovementX *= PADDLE_FRICTION;
-    this.paddleOffsetX += this.paddleMovementX;
+    this.paddlePositionX += this.paddleMovementX;
+    this.ballPositionX += BALL_SPEED;
+    this.ballPositionY += BALL_SPEED;
 
     this.draw();
     window.requestAnimationFrame(() => this.gameLoop());
   }
 
+  private clear() {
+    const context = this.canvas.getContext("2d");
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
   private draw() {
-    this.ball.draw();
-    this.paddle.draw(this.paddleOffsetX);
+    this.clear();
+
+    this.bricks.forEach((brick) => {
+      brick.draw();
+    });
+    this.paddle.draw(this.paddlePositionX);
+    this.ball.draw(this.ballPositionX, this.ballPositionY);
   }
 }
