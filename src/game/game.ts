@@ -1,46 +1,48 @@
 import { generateBricks } from "../bricks/bricks";
 import { generateBall } from "../ball/ball";
-import {
-  clearPaddle,
-  generatePaddle,
-  initializePaddle,
-} from "../paddle/paddle";
-import { PADDLE_SPEED } from "../paddle/paddle-config";
-import { isKeyLeft, isKeyRight } from "./isKey";
+import { clearPaddle, generatePaddle } from "../paddle/paddle";
+import { PADDLE_FRICTION, PADDLE_SPEED } from "../paddle/paddle-config";
+import { containsKeyLeft, containsKeyRight, shouldListenToKey } from "./isKey";
 
-let paddleOffset: number = 0;
-let secondsPassed: number = 0;
-let oldTimeStamp: number = 0;
+let paddleMovementX: number = 0;
+let paddleOffsetX: number = 0;
+const keys: Record<string, boolean> = {};
 
 export const initializeGame: TInitializeGame = (canvas) => {
+  // Register keyboard event listeners
   document.addEventListener("keydown", (event) => {
-    if (isKeyLeft(event)) {
-      event.preventDefault();
-      paddleOffset -= PADDLE_SPEED;
-      return;
+    if (shouldListenToKey(event.code)) {
+      keys[event.code] = true;
     }
-    if (isKeyRight(event)) {
-      event.preventDefault();
-      paddleOffset += PADDLE_SPEED;
-      return;
+  });
+  document.addEventListener("keyup", (event) => {
+    if (shouldListenToKey(event.code)) {
+      keys[event.code] = false;
     }
   });
 
   // Initialize the paddle in the middle of the screen.
-  initializePaddle(canvas, canvas.width / 2);
+  paddleOffsetX = canvas.width / 2;
+  generatePaddle(canvas, paddleOffsetX);
 
   // Generating the bricks only needs to happen once. After that we only need to remove the bricks that are hit
   generateBricks(canvas);
-  gameLoop(canvas, 0);
+  gameLoop(canvas);
 };
 
-const gameLoop = (canvas: HTMLCanvasElement, time: DOMHighResTimeStamp) => {
-  // Calculate how much time has passed
-  secondsPassed = (time - oldTimeStamp) / 1000;
-  oldTimeStamp = time;
+const gameLoop = (canvas: HTMLCanvasElement) => {
+  if (containsKeyLeft(keys) && paddleMovementX > -PADDLE_SPEED) {
+    paddleMovementX--;
+  }
+  if (containsKeyRight(keys) && paddleMovementX < PADDLE_SPEED) {
+    paddleMovementX++;
+  }
+
+  paddleMovementX *= PADDLE_FRICTION;
+  paddleOffsetX += paddleMovementX;
 
   drawScreen(canvas);
-  window.requestAnimationFrame((newTime) => gameLoop(canvas, newTime));
+  window.requestAnimationFrame(() => gameLoop(canvas));
 };
 
 const drawScreen: TDrawScreen = (canvas) => {
@@ -49,6 +51,5 @@ const drawScreen: TDrawScreen = (canvas) => {
 
   // Re-draw the paddle
   clearPaddle(canvas);
-  generatePaddle(canvas, paddleOffset * secondsPassed);
-  paddleOffset = 0;
+  generatePaddle(canvas, paddleOffsetX);
 };

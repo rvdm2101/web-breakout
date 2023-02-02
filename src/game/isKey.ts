@@ -3,8 +3,11 @@ const KEY_D = "KeyD";
 const KEY_ARROW_LEFT = "ArrowLeft";
 const KEY_ARROW_RIGHT = "ArrowRight";
 
-export const isKeyLeft = (event: KeyboardEvent): boolean =>
-  [KEY_A, KEY_ARROW_LEFT].includes(event.code);
+export const shouldListenToKey = (keyCode: string): boolean =>
+  [KEY_A, KEY_D, KEY_ARROW_LEFT, KEY_ARROW_RIGHT].includes(keyCode);
 
-export const isKeyRight = (event: KeyboardEvent): boolean =>
-  [KEY_D, KEY_ARROW_RIGHT].includes(event.code);
+export const containsKeyLeft = (keys: Record<string, boolean>): boolean =>
+  keys[KEY_A] || keys[KEY_ARROW_LEFT];
+
+export const containsKeyRight = (keys: Record<string, boolean>): boolean =>
+  keys[KEY_D] || keys[KEY_ARROW_RIGHT];

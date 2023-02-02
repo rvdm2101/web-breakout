@@ -16,7 +16,7 @@ export const clearPaddle: TClearPaddle = (canvas) => {
     0,
     getPaddleYPosition(canvas),
     canvas.width,
-    PADDLE_HEIGHT + PADDLE_HEIGHT_OFFSET
+    PADDLE_HEIGHT_OFFSET
   );
 };
 
@@ -25,15 +25,14 @@ const drawPaddle: TDrawPaddle = (context, x, y) => {
   context.fillRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
 };
 
-export const initializePaddle: TInitializePaddle = (canvas, positionX) => {
-  const context = canvas.getContext("2d");
+export const generatePaddle: TGeneratePaddle = (
+  canvas: HTMLCanvasElement,
+  positionX: number
+) => {
   previousPosition = positionX - PADDLE_WIDTH / 2;
-  drawPaddle(context, previousPosition, getPaddleYPosition(canvas));
-};
-
-export const generatePaddle: TGeneratePaddle = (canvas, moveX) => {
-  const context = canvas.getContext("2d");
-  previousPosition = moveX === 0 ? previousPosition : previousPosition + moveX;
-
-  drawPaddle(context, previousPosition, getPaddleYPosition(canvas));
+  drawPaddle(
+    canvas.getContext("2d"),
+    previousPosition,
+    getPaddleYPosition(canvas)
+  );
 };
