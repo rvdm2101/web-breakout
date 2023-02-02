@@ -1,16 +1,27 @@
 import { BALL_SIZE } from "./ball-config";
 
-export const generateBall: TGenerateBall = (canvas, offsetX) => {
-  const ball = canvas.getContext("2d");
+export class Ball {
+  private canvas: HTMLCanvasElement;
+  private positionX: number;
+  private positionY: number;
 
-  ball.fillStyle = "#f00";
-  ball.beginPath();
-  ball.arc(
-    offsetX - BALL_SIZE / 2,
-    canvas.height - 80,
-    BALL_SIZE,
-    0,
-    2 * Math.PI
-  );
-  ball.fill();
-};
+  constructor(canvas: HTMLCanvasElement, positionX: number, positionY: number) {
+    this.canvas = canvas;
+    this.positionX = positionX - BALL_SIZE / 2;
+    this.positionY = positionY - BALL_SIZE / 2;
+  }
+
+  private clear() {
+    // @TODO clear previous ball position
+  }
+
+  public draw() {
+    this.clear();
+
+    const context = this.canvas.getContext("2d");
+    context.fillStyle = "#f00";
+    context.beginPath();
+    context.arc(this.positionX, this.positionY, BALL_SIZE, 0, 2 * Math.PI);
+    context.fill();
+  }
+}

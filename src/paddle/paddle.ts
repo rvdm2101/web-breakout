@@ -4,35 +4,42 @@ import {
   PADDLE_HEIGHT_OFFSET,
 } from "./paddle-config";
 
-let previousPosition: number = 0;
-const getPaddleYPosition = (canvas: HTMLCanvasElement) =>
-  canvas.height - PADDLE_HEIGHT_OFFSET;
+export class Paddle {
+  private previousPosition: number;
+  private positionY: number;
+  private canvas: HTMLCanvasElement;
 
-export const clearPaddle: TClearPaddle = (canvas) => {
-  const context = canvas.getContext("2d");
+  constructor(initialPositionX: number, canvas: HTMLCanvasElement) {
+    this.previousPosition = initialPositionX - PADDLE_WIDTH / 2;
+    this.canvas = canvas;
 
-  // Clear the entire bottom part of the game screen
-  context.clearRect(
-    0,
-    getPaddleYPosition(canvas),
-    canvas.width,
-    PADDLE_HEIGHT_OFFSET
-  );
-};
+    // @TODO should this be responsive??
+    this.positionY = this.canvas.height - PADDLE_HEIGHT_OFFSET;
+  }
 
-const drawPaddle: TDrawPaddle = (context, x, y) => {
-  context.fillStyle = "#f00";
-  context.fillRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
-};
+  private clear(): void {
+    const context = this.canvas.getContext("2d");
 
-export const generatePaddle: TGeneratePaddle = (
-  canvas: HTMLCanvasElement,
-  positionX: number
-) => {
-  previousPosition = positionX - PADDLE_WIDTH / 2;
-  drawPaddle(
-    canvas.getContext("2d"),
-    previousPosition,
-    getPaddleYPosition(canvas)
-  );
-};
+    // Clear the entire bottom part of the game screen
+    context.clearRect(
+      0,
+      this.positionY,
+      this.canvas.width,
+      PADDLE_HEIGHT_OFFSET
+    );
+  }
+
+  public draw(positionX: number): void {
+    this.clear();
+    this.previousPosition = positionX - PADDLE_WIDTH / 2;
+
+    const context = this.canvas.getContext("2d");
+    context.fillStyle = "#f00";
+    context.fillRect(
+      this.previousPosition,
+      this.positionY,
+      PADDLE_WIDTH,
+      PADDLE_HEIGHT
+    );
+  }
+}

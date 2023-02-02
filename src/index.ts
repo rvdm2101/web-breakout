@@ -1,4 +1,4 @@
-import { initializeGame } from "./game/game";
+import { Game } from "./game";
 
 /**
  * Create canvas inside the provided container
@@ -17,7 +17,7 @@ const generateGame: TGenerateGame = (elementSelector) => {
   canvas.height = (canvas.width / 16) * 9;
 
   container.appendChild(canvas);
-  initializeGame(canvas);
+  new Game(canvas);
 };
 
 export default generateGame;
