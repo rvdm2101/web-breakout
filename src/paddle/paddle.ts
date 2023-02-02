@@ -5,12 +5,12 @@ import {
 } from "./paddle-config";
 
 export class Paddle {
-  private previousPosition: number;
+  private positionX: number;
   private positionY: number;
   private canvas: HTMLCanvasElement;
 
   constructor(initialPositionX: number, canvas: HTMLCanvasElement) {
-    this.previousPosition = initialPositionX - PADDLE_WIDTH / 2;
+    this.positionX = initialPositionX - PADDLE_WIDTH / 2;
     this.canvas = canvas;
 
     // @TODO should this be responsive??
@@ -31,12 +31,12 @@ export class Paddle {
 
   public draw(positionX: number): void {
     this.clear();
-    this.previousPosition = positionX - PADDLE_WIDTH / 2;
+    this.positionX = positionX - PADDLE_WIDTH / 2;
 
     const context = this.canvas.getContext("2d");
     context.fillStyle = "#f00";
     context.fillRect(
-      this.previousPosition,
+      this.positionX,
       this.positionY,
       PADDLE_WIDTH,
       PADDLE_HEIGHT
