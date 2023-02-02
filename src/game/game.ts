@@ -1,4 +1,4 @@
-import { Ball, BALL_SPEED } from "../ball";
+import { Ball, BALL_SIZE, BALL_SPEED } from "../ball";
 import { Paddle, PADDLE_FRICTION, PADDLE_SPEED } from "../paddle";
 import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
 import {
@@ -10,6 +10,8 @@ import {
 export class Game {
   private paddleMovementX: number = 0;
   private paddlePositionX: number;
+  private ballMovementX: number = 0;
+  private ballMovementY: number = 0;
   private ballPositionX: number;
   private ballPositionY: number;
 
@@ -30,6 +32,8 @@ export class Game {
 
     this.ballPositionX = canvas.width / 2;
     this.ballPositionY = canvas.height - 80;
+    this.ballMovementX = BALL_SPEED;
+    this.ballMovementY = BALL_SPEED;
     this.ball = new Ball(canvas);
 
     this.generateBricks();
@@ -74,8 +78,22 @@ export class Game {
 
     this.paddleMovementX *= PADDLE_FRICTION;
     this.paddlePositionX += this.paddleMovementX;
-    this.ballPositionX += BALL_SPEED;
-    this.ballPositionY += BALL_SPEED;
+
+    if (
+      this.ballPositionX - BALL_SIZE / 2 <= 0 ||
+      this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
+    ) {
+      this.ballMovementX = -this.ballMovementX;
+    }
+    if (
+      this.ballPositionY - BALL_SIZE / 2 <= 0 ||
+      this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
+    ) {
+      this.ballMovementY = -this.ballMovementY;
+    }
+
+    this.ballPositionX += this.ballMovementX;
+    this.ballPositionY += this.ballMovementY;
 
     this.draw();
     window.requestAnimationFrame(() => this.gameLoop());

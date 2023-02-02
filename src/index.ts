@@ -15,6 +15,7 @@ const generateGame: TGenerateGame = (elementSelector) => {
   const canvas = document.createElement("canvas");
   canvas.width = container.clientWidth;
   canvas.height = (canvas.width / 16) * 9;
+  canvas.style.border = "1px solid black";
 
   container.appendChild(canvas);
   new Game(canvas);
