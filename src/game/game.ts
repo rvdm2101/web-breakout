@@ -69,6 +69,14 @@ export class Game {
   }
 
   private gameLoop() {
+    this.update();
+    this.collisionDetection();
+    this.clear();
+    this.draw();
+    window.requestAnimationFrame(() => this.gameLoop());
+  }
+
+  private update() {
     if (containsKeyLeft(this.keys) && this.paddleMovementX > -PADDLE_SPEED) {
       this.paddleMovementX--;
     }
@@ -79,24 +87,25 @@ export class Game {
     this.paddleMovementX *= PADDLE_FRICTION;
     this.paddlePositionX += this.paddleMovementX;
 
+    this.ballPositionX += this.ballMovementX;
+    this.ballPositionY += this.ballMovementY;
+  }
+
+  private collisionDetection() {
     if (
       this.ballPositionX - BALL_SIZE / 2 <= 0 ||
       this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
     ) {
       this.ballMovementX = -this.ballMovementX;
+      this.ballPositionX += this.ballMovementX;
     }
     if (
       this.ballPositionY - BALL_SIZE / 2 <= 0 ||
       this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
     ) {
       this.ballMovementY = -this.ballMovementY;
+      this.ballPositionY += this.ballMovementY;
     }
-
-    this.ballPositionX += this.ballMovementX;
-    this.ballPositionY += this.ballMovementY;
-
-    this.draw();
-    window.requestAnimationFrame(() => this.gameLoop());
   }
 
   private clear() {
@@ -105,8 +114,6 @@ export class Game {
   }
 
   private draw() {
-    this.clear();
-
     this.bricks.forEach((brick) => {
       brick.draw();
     });
