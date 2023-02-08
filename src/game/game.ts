@@ -37,6 +37,10 @@ export class Game {
     this.ball = new Ball(canvas);
 
     this.generateBricks();
+    this.draw();
+  }
+
+  public start() {
     this.addControls();
     this.gameLoop();
   }
@@ -62,7 +66,6 @@ export class Game {
           indexX * (BRICK_WIDTH + BRICK_SPACING),
           indexY * (BRICK_HEIGHT + BRICK_SPACING)
         );
-        brick.draw();
         this.bricks.push(brick);
       }
     }

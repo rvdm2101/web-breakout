@@ -18,7 +18,8 @@ const generateGame: TGenerateGame = (elementSelector) => {
   canvas.style.border = "1px solid black";
 
   container.appendChild(canvas);
-  new Game(canvas);
+  const game = new Game(canvas);
+  game.start();
 };
 
 export default generateGame;
