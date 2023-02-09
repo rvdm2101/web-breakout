@@ -16,4 +16,20 @@ export class Brick {
     context.fillStyle = "#f00";
     context.fillRect(this.positionX, this.positionY, BRICK_WIDTH, BRICK_HEIGHT);
   }
+
+  public top() {
+    return this.positionY;
+  }
+
+  public left() {
+    return this.positionX;
+  }
+
+  public right() {
+    return this.positionX + BRICK_WIDTH;
+  }
+
+  public bottom() {
+    return this.positionY + BRICK_HEIGHT;
+  }
 }

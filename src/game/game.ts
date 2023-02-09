@@ -1,5 +1,5 @@
 import { Ball, BALL_SIZE, BALL_SPEED } from "../ball";
-import { Paddle, PADDLE_FRICTION, PADDLE_SPEED } from "../paddle";
+import { Paddle, PADDLE_FRICTION, PADDLE_SPEED, PADDLE_WIDTH } from "../paddle";
 import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
 import {
   containsKeyLeft,
@@ -26,12 +26,12 @@ export class Game {
     this.canvas = canvas;
 
     // Initialize the paddle in the middle of the screen.
-    this.paddlePositionX = canvas.width / 2;
+    this.paddlePositionX = canvas.width / 2 - PADDLE_WIDTH / 2;
     this.paddle = new Paddle(canvas);
     // @TODO make 80 a const, and maybe move it to the Ball constructor
 
-    this.ballPositionX = canvas.width / 2;
-    this.ballPositionY = canvas.height - 80;
+    this.ballPositionX = canvas.width / 2 - BALL_SIZE / 2;
+    this.ballPositionY = canvas.height - 80 - BALL_SIZE / 2;
     this.ballMovementX = BALL_SPEED;
     this.ballMovementY = BALL_SPEED;
     this.ball = new Ball(canvas);
