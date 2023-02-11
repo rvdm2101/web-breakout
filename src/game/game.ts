@@ -59,8 +59,8 @@ export class Game {
   }
 
   private generateBricks() {
-    for (let indexY = 0; indexY < 2; indexY++) {
-      for (let indexX = 0; indexX < 10; indexX++) {
+    for (let indexY = 0; indexY < 8; indexY++) {
+      for (let indexX = 0; indexX < 29; indexX++) {
         const brick = new Brick(
           this.canvas.getContext("2d"),
           indexX * (BRICK_WIDTH + BRICK_SPACING),
@@ -99,16 +99,32 @@ export class Game {
       this.ballPositionX - BALL_SIZE / 2 <= 0 ||
       this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
     ) {
-      this.ballMovementX = -this.ballMovementX;
-      this.ballPositionX += this.ballMovementX;
+      this.bounceBallX();
     }
     if (
       this.ballPositionY - BALL_SIZE / 2 <= 0 ||
       this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
     ) {
-      this.ballMovementY = -this.ballMovementY;
-      this.ballPositionY += this.ballMovementY;
+      this.bounceBallY();
     }
+
+    this.bricks.forEach((brick) => {
+      const brickHit = brick.hitAndBounce(this.ball);
+      if (!brickHit) {
+        return;
+      }
+      brickHit === "x" ? this.bounceBallX() : this.bounceBallY();
+    });
+  }
+
+  private bounceBallX() {
+    this.ballMovementX = -this.ballMovementX;
+    this.ballPositionX += this.ballMovementX;
+  }
+
+  private bounceBallY() {
+    this.ballMovementY = -this.ballMovementY;
+    this.ballPositionY += this.ballMovementY;
   }
 
   private clear() {
