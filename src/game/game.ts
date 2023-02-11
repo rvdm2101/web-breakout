@@ -34,7 +34,7 @@ export class Game {
     this.ballPositionY = canvas.height - 80 - BALL_SIZE / 2;
     this.ballMovementX = BALL_SPEED;
     this.ballMovementY = BALL_SPEED;
-    this.ball = new Ball(canvas);
+    this.ball = new Ball(canvas.getContext("2d"));
 
     this.generateBricks();
     this.draw();
@@ -62,7 +62,7 @@ export class Game {
     for (let indexY = 0; indexY < 2; indexY++) {
       for (let indexX = 0; indexX < 10; indexX++) {
         const brick = new Brick(
-          this.canvas,
+          this.canvas.getContext("2d"),
           indexX * (BRICK_WIDTH + BRICK_SPACING),
           indexY * (BRICK_HEIGHT + BRICK_SPACING)
         );
