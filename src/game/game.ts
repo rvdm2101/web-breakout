@@ -109,7 +109,11 @@ export class Game {
     }
 
     this.bricks.forEach((brick) => {
-      const brickHit = brick.hitAndBounce(this.ball);
+      const brickHit = brick.hitAndBounce(
+        this.ball,
+        this.ballPositionX,
+        this.ballPositionY
+      );
       if (!brickHit) {
         return;
       }

@@ -25,19 +25,19 @@ export class Ball {
     this.context2D.fill();
   }
 
-  public top() {
-    return this.positionY;
+  public top(positionY?: number) {
+    return positionY ?? this.positionY;
   }
 
-  public left() {
-    return this.positionX;
+  public left(positionX?: number) {
+    return positionX ?? this.positionX;
   }
 
-  public right() {
-    return this.positionX + BALL_SIZE;
+  public right(positionX?: number) {
+    return (positionX ?? this.positionX) + BALL_SIZE;
   }
 
-  public bottom() {
-    return this.positionY + BALL_SIZE;
+  public bottom(positionY?: number) {
+    return (positionY ?? this.positionY) + BALL_SIZE;
   }
 }

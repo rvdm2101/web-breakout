@@ -55,31 +55,47 @@ export class Brick {
     return this.lifes > 0;
   }
 
-  public detectHit(ball: Ball): boolean {
+  public detectHit(
+    ball: Ball,
+    newPositionX: number,
+    newPositionY: number
+  ): boolean {
     if (!this.isAlive()) {
       return false;
     }
 
     const isHit =
-      isBetween(ball.right(), this.left(), this.right() + BALL_SIZE) &&
-      isBetween(ball.bottom(), this.top(), this.bottom() + BALL_SIZE);
+      isBetween(
+        ball.right(newPositionX),
+        this.left(),
+        this.right() + BALL_SIZE
+      ) &&
+      isBetween(
+        ball.bottom(newPositionY),
+        this.top(),
+        this.bottom() + BALL_SIZE
+      );
     this.color = isHit ? "#ff0" : "#f00";
     return isHit;
   }
 
-  public hitAndBounce(ball: Ball): "x" | "y" | false {
-    if (!this.detectHit(ball)) {
+  public hitAndBounce(
+    ball: Ball,
+    newPositionX: number,
+    newPositionY: number
+  ): "x" | "y" | false {
+    if (!this.detectHit(ball, newPositionX, newPositionY)) {
       return false;
     }
     this.lifes -= 1;
 
     const closestSideX = Math.min(
-      Math.abs(ball.left() - this.right()),
-      Math.abs(ball.right() - this.left())
+      Math.abs(ball.left(newPositionX) - this.right()),
+      Math.abs(ball.right(newPositionX) - this.left())
     );
     const closestSideY = Math.min(
-      Math.abs(ball.top() - this.bottom()),
-      Math.abs(ball.bottom() - this.top())
+      Math.abs(ball.top(newPositionY) - this.bottom()),
+      Math.abs(ball.bottom(newPositionY) - this.top())
     );
 
     const distancePercentageX = BRICK_WIDTH / 2 / closestSideX;
