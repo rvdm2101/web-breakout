@@ -108,17 +108,28 @@ export class Game {
       this.bounceBallY();
     }
 
-    this.bricks.forEach((brick) => {
-      const brickHit = brick.hitAndBounce(
+    // Detect brick hit and bounce ball
+    this.bricks.forEach((brick) =>
+      this.bounceBall(
+        brick.hitAndBounce(this.ball, this.ballPositionX, this.ballPositionY)
+      )
+    );
+
+    // Detect paddle hit and bounce ball
+    this.bounceBall(
+      this.paddle.hitAndBounce(
         this.ball,
         this.ballPositionX,
         this.ballPositionY
-      );
-      if (!brickHit) {
-        return;
-      }
-      brickHit === "x" ? this.bounceBallX() : this.bounceBallY();
-    });
+      )
+    );
+  }
+
+  private bounceBall(bounce: THitAndBounce) {
+    if (!bounce) {
+      return;
+    }
+    bounce === "x" ? this.bounceBallX() : this.bounceBallY();
   }
 
   private bounceBallX() {

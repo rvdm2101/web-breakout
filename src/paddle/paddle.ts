@@ -3,7 +3,9 @@ import {
   PADDLE_HEIGHT,
   PADDLE_HEIGHT_OFFSET,
 } from "./paddle-config";
-import { BRICK_HEIGHT, BRICK_WIDTH } from "../brick";
+import { Ball, BALL_SIZE } from "../ball";
+import { isCurrentHit } from "../utils/isHit";
+import { getBounceDirection } from "../utils/getBounceDirection";
 
 export class Paddle {
   private positionY: number;
@@ -42,5 +44,42 @@ export class Paddle {
 
   public bottom() {
     return this.positionY + PADDLE_HEIGHT;
+  }
+
+  public detectHit(
+    ball: Ball,
+    newPositionX: number,
+    newPositionY: number
+  ): boolean {
+    return isCurrentHit(
+      ball.right(newPositionX),
+      ball.bottom(newPositionY),
+      this.left(),
+      this.right() + BALL_SIZE,
+      this.top(),
+      this.bottom() + BALL_SIZE
+    );
+  }
+
+  public hitAndBounce(
+    ball: Ball,
+    newPositionX: number,
+    newPositionY: number
+  ): THitAndBounce {
+    if (!this.detectHit(ball, newPositionX, newPositionY)) {
+      return false;
+    }
+
+    return getBounceDirection(
+      ball,
+      newPositionX,
+      newPositionY,
+      this.left(),
+      this.right(),
+      this.top(),
+      this.bottom(),
+      PADDLE_WIDTH,
+      PADDLE_HEIGHT
+    );
   }
 }

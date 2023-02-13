@@ -1,6 +1,7 @@
 import { BRICK_HEIGHT, BRICK_WIDTH } from "./brick-config";
 import { Ball, BALL_SIZE } from "../ball";
-import { isBetween } from "../utils/isBetween";
+import { isCurrentHit } from "../utils/isHit";
+import { getBounceDirection } from "../utils/getBounceDirection";
 
 export class Brick {
   private context2D: CanvasRenderingContext2D;
@@ -64,17 +65,14 @@ export class Brick {
       return false;
     }
 
-    const isHit =
-      isBetween(
-        ball.right(newPositionX),
-        this.left(),
-        this.right() + BALL_SIZE
-      ) &&
-      isBetween(
-        ball.bottom(newPositionY),
-        this.top(),
-        this.bottom() + BALL_SIZE
-      );
+    const isHit = isCurrentHit(
+      ball.right(newPositionX),
+      ball.bottom(newPositionY),
+      this.left(),
+      this.right() + BALL_SIZE,
+      this.top(),
+      this.bottom() + BALL_SIZE
+    );
     this.color = isHit ? "#ff0" : "#f00";
     return isHit;
   }
@@ -83,23 +81,22 @@ export class Brick {
     ball: Ball,
     newPositionX: number,
     newPositionY: number
-  ): "x" | "y" | false {
+  ): THitAndBounce {
     if (!this.detectHit(ball, newPositionX, newPositionY)) {
       return false;
     }
     this.lifes -= 1;
 
-    const closestSideX = Math.min(
-      Math.abs(ball.left(newPositionX) - this.right()),
-      Math.abs(ball.right(newPositionX) - this.left())
+    return getBounceDirection(
+      ball,
+      newPositionX,
+      newPositionY,
+      this.left(),
+      this.right(),
+      this.top(),
+      this.bottom(),
+      BRICK_WIDTH,
+      BRICK_HEIGHT
     );
-    const closestSideY = Math.min(
-      Math.abs(ball.top(newPositionY) - this.bottom()),
-      Math.abs(ball.bottom(newPositionY) - this.top())
-    );
-
-    const distancePercentageX = BRICK_WIDTH / 2 / closestSideX;
-    const distancePercentageY = BRICK_HEIGHT / 2 / closestSideY;
-    return distancePercentageY > distancePercentageX ? "y" : "x";
   }
 }
