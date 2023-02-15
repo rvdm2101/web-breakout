@@ -95,18 +95,7 @@ export class Game {
   }
 
   private collisionDetection() {
-    if (
-      this.ballPositionX - BALL_SIZE / 2 <= 0 ||
-      this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
-    ) {
-      this.bounceBallX();
-    }
-    if (
-      this.ballPositionY - BALL_SIZE / 2 <= 0 ||
-      this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
-    ) {
-      this.bounceBallY();
-    }
+    this.collisionDetectionWalls();
 
     // Detect brick hit and bounce ball
     this.bricks.forEach((brick) =>
@@ -123,6 +112,26 @@ export class Game {
         this.ballPositionY
       )
     );
+  }
+
+  private collisionDetectionWalls() {
+    // Hitting the left or right wall
+    if (
+      this.ballPositionX - BALL_SIZE / 2 <= 0 ||
+      this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
+    ) {
+      this.bounceBallX();
+      return;
+    }
+
+    // Hitting the top or bottom
+    if (
+      this.ballPositionY - BALL_SIZE / 2 <= 0 ||
+      this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
+    ) {
+      this.bounceBallY();
+      return;
+    }
   }
 
   private bounceBall(bounce: THitAndBounce) {
