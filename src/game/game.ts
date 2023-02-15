@@ -14,6 +14,7 @@ export class Game {
   private ballMovementY: number = 0;
   private ballPositionX: number;
   private ballPositionY: number;
+  private gameState: "stopped" | "playing" = "stopped";
 
   private readonly keys: Record<string, boolean> = {};
   private readonly canvas: HTMLCanvasElement;
@@ -41,6 +42,7 @@ export class Game {
   }
 
   public start() {
+    this.gameState = "playing";
     this.addControls();
     this.gameLoop();
   }
@@ -76,7 +78,9 @@ export class Game {
     this.collisionDetection();
     this.clear();
     this.draw();
-    window.requestAnimationFrame(() => this.gameLoop());
+    if (this.gameState === "playing") {
+      window.requestAnimationFrame(() => this.gameLoop());
+    }
   }
 
   private update() {
@@ -98,11 +102,17 @@ export class Game {
     this.collisionDetectionWalls();
 
     // Detect brick hit and bounce ball
-    this.bricks.forEach((brick) =>
-      this.bounceBall(
-        brick.hitAndBounce(this.ball, this.ballPositionX, this.ballPositionY)
-      )
-    );
+    this.bricks
+      .filter((brick) => brick.isAlive())
+      .forEach((brick) =>
+        this.bounceBall(
+          brick.hitAndBounce(this.ball, this.ballPositionX, this.ballPositionY)
+        )
+      );
+
+    if (!this.bricks.find((brick) => brick.isAlive())) {
+      this.gameWon();
+    }
 
     // Detect paddle hit and bounce ball
     this.bounceBall(
@@ -124,14 +134,26 @@ export class Game {
       return;
     }
 
-    // Hitting the top or bottom
-    if (
-      this.ballPositionY - BALL_SIZE / 2 <= 0 ||
-      this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height
-    ) {
+    // Hitting the top
+    if (this.ballPositionY - BALL_SIZE / 2 <= 0) {
       this.bounceBallY();
       return;
     }
+
+    // Hitting the bottom
+    if (this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height) {
+      this.gameLost();
+    }
+  }
+
+  private gameWon() {
+    alert("Game over, you won!");
+    this.gameState = "stopped";
+  }
+
+  private gameLost() {
+    alert("Game over, you lost!");
+    this.gameState = "stopped";
   }
 
   private bounceBall(bounce: THitAndBounce) {
@@ -157,9 +179,11 @@ export class Game {
   }
 
   private draw() {
-    this.bricks.forEach((brick) => {
-      brick.draw();
-    });
+    this.bricks
+      .filter((brick) => brick.isAlive())
+      .forEach((brick) => {
+        brick.draw();
+      });
     this.paddle.draw(this.paddlePositionX);
     this.ball.draw(this.ballPositionX, this.ballPositionY);
   }
