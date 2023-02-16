@@ -4,8 +4,6 @@ describe("isCurrentHit()", () => {
   let targetX = 150;
   let targetY = 150;
 
-  beforeEach(() => {});
-
   describe("Only X or Y of target and current align", () => {
     it("Shouldn't count as a hit if ony X aligns", () => {
       expect(isCurrentHit(targetX, targetY, 140, 160, 100, 120)).toBeFalsy();
