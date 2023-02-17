@@ -77,9 +77,7 @@ export class Paddle {
       this.left(),
       this.right(),
       this.top(),
-      this.bottom(),
-      PADDLE_WIDTH,
-      PADDLE_HEIGHT
+      this.bottom()
     );
   }
 }

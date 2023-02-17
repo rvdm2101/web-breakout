@@ -7,10 +7,10 @@ export const getBounceDirection = (
   currentXMin: number,
   currentXMax: number,
   currentYMin: number,
-  currentYMax: number,
-  currentWidth: number,
-  currentHeight: number
+  currentYMax: number
 ): TBounce => {
+  const currentWidth = currentXMax - currentXMin;
+  const currentHeight = currentYMax - currentYMin;
   const closestSideX = Math.min(
     Math.abs(ball.left(ballPositionX) - currentXMax),
     Math.abs(ball.right(ballPositionX) - currentXMin)

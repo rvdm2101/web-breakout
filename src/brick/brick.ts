@@ -94,9 +94,7 @@ export class Brick {
       this.left(),
       this.right(),
       this.top(),
-      this.bottom(),
-      BRICK_WIDTH,
-      BRICK_HEIGHT
+      this.bottom()
     );
   }
 }
