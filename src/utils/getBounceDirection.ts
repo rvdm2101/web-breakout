@@ -9,8 +9,6 @@ export const getBounceDirection = (
   currentYMin: number,
   currentYMax: number
 ): TBounce => {
-  const currentWidth = currentXMax - currentXMin;
-  const currentHeight = currentYMax - currentYMin;
   const closestSideX = Math.min(
     Math.abs(ball.left(ballPositionX) - currentXMax),
     Math.abs(ball.right(ballPositionX) - currentXMin)
@@ -19,8 +17,8 @@ export const getBounceDirection = (
     Math.abs(ball.top(ballPositionY) - currentYMax),
     Math.abs(ball.bottom(ballPositionY) - currentYMin)
   );
-
-  const distancePercentageX = currentWidth / 2 / closestSideX;
-  const distancePercentageY = currentHeight / 2 / closestSideY;
-  return distancePercentageY > distancePercentageX ? "y" : "x";
+  return {
+    direction: closestSideY < closestSideX ? "y" : "x",
+    amount: Math.min(closestSideX, closestSideY),
+  };
 };

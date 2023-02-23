@@ -127,21 +127,25 @@ export class Game {
   private collisionDetectionWalls() {
     // Hitting the left or right wall
     if (
-      this.ballPositionX - BALL_SIZE / 2 <= 0 ||
-      this.ballPositionX + BALL_SIZE / 2 >= this.canvas.width
+      this.ballPositionX <= 0 ||
+      this.ballPositionX + BALL_SIZE >= this.canvas.width
     ) {
-      this.bounceBallX();
+      this.bounceBallX(
+        this.ballPositionX <= 0
+          ? Math.abs(this.ballPositionX)
+          : this.ballPositionX + BALL_SIZE - this.canvas.width
+      );
       return;
     }
 
     // Hitting the top
-    if (this.ballPositionY - BALL_SIZE / 2 <= 0) {
-      this.bounceBallY();
+    if (this.ballPositionY <= 0) {
+      this.bounceBallY(Math.abs(this.ballPositionY));
       return;
     }
 
     // Hitting the bottom
-    if (this.ballPositionY + BALL_SIZE / 2 >= this.canvas.height) {
+    if (this.ballPositionY + BALL_SIZE >= this.canvas.height) {
       this.gameLost();
     }
   }
@@ -160,17 +164,28 @@ export class Game {
     if (!bounce) {
       return;
     }
-    bounce === "x" ? this.bounceBallX() : this.bounceBallY();
+    this.returnBallToCollisionPoint(bounce.amount);
+    bounce.direction === "x"
+      ? this.bounceBallX(bounce.amount)
+      : this.bounceBallY(bounce.amount);
   }
 
-  private bounceBallX() {
+  private returnBallToCollisionPoint(amount: number) {
+    // Move the ball `amount` of points back to the point of collision.
+    // Using the ballMovement we can calculate if the ball should move to the top/left or bottom/right.
+    // I.e. if the this.ballMovementX is greater than 0, the ball moves to the right. So the previous position is on the left
+    this.ballPositionY -= this.ballMovementY > 0 ? -amount : amount;
+    this.ballPositionX -= this.ballMovementX > 0 ? -amount : amount;
+  }
+
+  private bounceBallX(amount: number) {
     this.ballMovementX = -this.ballMovementX;
-    this.ballPositionX += this.ballMovementX;
+    this.ballPositionX += amount;
   }
 
-  private bounceBallY() {
+  private bounceBallY(amount: number) {
     this.ballMovementY = -this.ballMovementY;
-    this.ballPositionY += this.ballMovementY;
+    this.ballPositionY += amount;
   }
 
   private clear() {
