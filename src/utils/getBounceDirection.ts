@@ -17,6 +17,7 @@ export const getBounceDirection = (
     Math.abs(ball.top(ballPositionY) - currentYMax),
     Math.abs(ball.bottom(ballPositionY) - currentYMin)
   );
+  // If amount is greater than zero, than the ball is inside the `current` object
   return {
     direction: closestSideY < closestSideX ? "y" : "x",
     amount: Math.min(closestSideX, closestSideY),

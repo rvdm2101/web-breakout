@@ -164,7 +164,6 @@ export class Game {
     if (!bounce) {
       return;
     }
-    this.returnBallToCollisionPoint(bounce.amount);
     bounce.direction === "x"
       ? this.bounceBallX(bounce.amount)
       : this.bounceBallY(bounce.amount);
@@ -179,11 +178,13 @@ export class Game {
   }
 
   private bounceBallX(amount: number) {
+    this.returnBallToCollisionPoint(amount);
     this.ballMovementX = -this.ballMovementX;
     this.ballPositionX += amount;
   }
 
   private bounceBallY(amount: number) {
+    this.returnBallToCollisionPoint(amount);
     this.ballMovementY = -this.ballMovementY;
     this.ballPositionY += amount;
   }
