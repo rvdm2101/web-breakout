@@ -79,18 +79,18 @@ export class Brick {
 
   public hitAndBounce(
     ball: Ball,
-    newPositionX: number,
-    newPositionY: number
+    ballPositionX: number,
+    ballPositionY: number
   ): THitAndBounce {
-    if (!this.detectHit(ball, newPositionX, newPositionY)) {
+    if (!this.detectHit(ball, ballPositionX, ballPositionY)) {
       return false;
     }
     this.lifes -= 1;
 
     return getBounceDirection(
       ball,
-      newPositionX,
-      newPositionY,
+      ballPositionX,
+      ballPositionY,
       this.left(),
       this.right(),
       this.top(),
