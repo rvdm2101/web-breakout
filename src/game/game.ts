@@ -14,7 +14,7 @@ export class Game {
   private ballMovementY: number = 0;
   private ballPositionX: number;
   private ballPositionY: number;
-  private gameState: "stopped" | "playing" = "stopped";
+  private gameState: GameState = GameState.ENDED;
 
   private readonly keys: Record<string, boolean> = {};
   private readonly canvas: HTMLCanvasElement;
@@ -42,7 +42,7 @@ export class Game {
   }
 
   public start() {
-    this.gameState = "playing";
+    this.gameState = GameState.PLAY;
     this.addControls();
     this.gameLoop();
   }
@@ -78,7 +78,7 @@ export class Game {
     this.collisionDetection();
     this.clear();
     this.draw();
-    if (this.gameState === "playing") {
+    if (this.gameState === GameState.PLAY) {
       window.requestAnimationFrame(() => this.gameLoop());
     }
   }
@@ -152,12 +152,12 @@ export class Game {
 
   private gameWon() {
     alert("Game over, you won!");
-    this.gameState = "stopped";
+    this.gameState = GameState.ENDED;
   }
 
   private gameLost() {
     alert("Game over, you lost!");
-    this.gameState = "stopped";
+    this.gameState = GameState.ENDED;
   }
 
   private bounceBall(bounce: THitAndBounce) {
