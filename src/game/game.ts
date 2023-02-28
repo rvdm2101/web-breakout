@@ -203,4 +203,18 @@ export class Game {
     this.paddle.draw(this.paddlePositionX);
     this.ball.draw(this.ballPositionX, this.ballPositionY);
   }
+
+  public canPause() {
+    // Cannot pause the game, when you already lost
+    return this.gameState !== GameState.ENDED;
+  }
+
+  public togglePause() {
+    if (!this.canPause()) {
+      return;
+    }
+
+    this.gameState =
+      this.gameState === GameState.PAUSE ? GameState.PLAY : GameState.PAUSE;
+  }
 }
