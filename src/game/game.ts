@@ -1,9 +1,11 @@
+import { GameState } from "./game-config";
 import { Ball, BALL_SIZE, BALL_SPEED } from "../ball";
 import { Paddle, PADDLE_FRICTION, PADDLE_SPEED, PADDLE_WIDTH } from "../paddle";
 import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
 import {
   containsKeyLeft,
   containsKeyRight,
+  KEY_SPACE_BAR,
   shouldListenToKey,
 } from "../utils/isKey";
 
@@ -44,17 +46,24 @@ export class Game {
   public start() {
     this.gameState = GameState.PLAY;
     this.addControls();
-    this.gameLoop();
+    this.startGameLoop();
   }
 
   private addControls(): void {
     document.addEventListener("keydown", (event) => {
       if (shouldListenToKey(event.code)) {
+        event.preventDefault();
         this.keys[event.code] = true;
+        return;
+      }
+      if (event.code === KEY_SPACE_BAR) {
+        event.preventDefault();
+        this.togglePause();
       }
     });
     document.addEventListener("keyup", (event) => {
       if (shouldListenToKey(event.code)) {
+        event.preventDefault();
         this.keys[event.code] = false;
       }
     });
@@ -79,8 +88,12 @@ export class Game {
     this.clear();
     this.draw();
     if (this.gameState === GameState.PLAY) {
-      window.requestAnimationFrame(() => this.gameLoop());
+      this.startGameLoop();
     }
+  }
+
+  private startGameLoop() {
+    window.requestAnimationFrame(() => this.gameLoop());
   }
 
   private update() {
@@ -214,7 +227,11 @@ export class Game {
       return;
     }
 
-    this.gameState =
-      this.gameState === GameState.PAUSE ? GameState.PLAY : GameState.PAUSE;
+    if (this.gameState === GameState.PAUSE) {
+      this.gameState = GameState.PLAY;
+      this.startGameLoop();
+    } else {
+      this.gameState = GameState.PAUSE;
+    }
   }
 }
