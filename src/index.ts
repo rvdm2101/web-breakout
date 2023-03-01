@@ -20,8 +20,7 @@ const generateGame: TGenerateGame = (elementSelector) => {
   canvas.style.border = "1px solid black";
 
   const pauseButton = document.createElement("button");
-  pauseButton.classList.add("pause-button");
-  pauseButton.innerText = "play";
+  pauseButton.classList.add("pause-button", "pause-button--state-paused");
 
   container.appendChild(canvas);
   container.appendChild(pauseButton);
@@ -30,9 +29,19 @@ const generateGame: TGenerateGame = (elementSelector) => {
 
   pauseButton.addEventListener("click", () => {
     game.togglePause();
-    pauseButton.classList.toggle("pause-button--paused", game.isPaused());
-    pauseButton.innerText = game.isPaused() ? "pause" : "play";
+    togglePauseButton();
   });
+
+  const togglePauseButton = () => {
+    pauseButton.classList.toggle(
+      "pause-button--state-paused",
+      !game.isPaused()
+    );
+    pauseButton.classList.toggle(
+      "pause-button--state-playing",
+      game.isPaused()
+    );
+  };
 };
 
 export default generateGame;

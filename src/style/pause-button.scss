@@ -2,6 +2,24 @@
   position: absolute;
   top: 0;
   left: 0;
-  min-width: 4rem;
-  min-height: 4rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  border: none;
+  background-color: #CCCCCC;
+  opacity: 80%;
+
+  &--state-playing,
+  &--state-paused {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 1rem;
+  }
+
+  &--state-playing {
+    background-image: url("/public/icons/play.svg");
+  }
+
+  &--state-paused {
+    background-image: url("/public/icons/pause.svg");
+  }
 }
