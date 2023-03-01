@@ -231,11 +231,18 @@ export class Game {
       return;
     }
 
-    if (this.isPaused()) {
-      this.gameState = GameState.PLAY;
+    const newGameState = this.isPaused() ? GameState.PLAY : GameState.PAUSE;
+    if (newGameState === GameState.PLAY) {
       this.startGameLoop();
-    } else {
-      this.gameState = GameState.PAUSE;
     }
+    this.gameState = newGameState;
+    this.gameStateListener(newGameState);
+  }
+
+  private gameStateListener(gameState: GameState) {}
+  public registerGameStateListener(
+    externalListenerFunction: (gameState: GameState) => void
+  ) {
+    this.gameStateListener = externalListenerFunction;
   }
 }
