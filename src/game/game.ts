@@ -222,12 +222,16 @@ export class Game {
     return this.gameState !== GameState.ENDED;
   }
 
+  public isPaused() {
+    return this.gameState === GameState.PAUSE;
+  }
+
   public togglePause() {
     if (!this.canPause()) {
       return;
     }
 
-    if (this.gameState === GameState.PAUSE) {
+    if (this.isPaused()) {
       this.gameState = GameState.PLAY;
       this.startGameLoop();
     } else {
