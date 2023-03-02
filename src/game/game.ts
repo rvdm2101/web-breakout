@@ -69,12 +69,19 @@ export class Game {
     });
   }
 
-  private generateBricks() {
-    for (let indexY = 0; indexY < 8; indexY++) {
-      for (let indexX = 0; indexX < 29; indexX++) {
+  private generateBricks(
+    amountOfColumns: number = 20,
+    amountOfRows: number = 8
+  ) {
+    const totalWidthOfBricksBlock =
+      amountOfColumns * (BRICK_WIDTH + BRICK_SPACING) - BRICK_SPACING;
+    const bricksOffsetX = (this.canvas.width - totalWidthOfBricksBlock) / 2;
+
+    for (let indexY = 0; indexY < amountOfRows; indexY++) {
+      for (let indexX = 0; indexX < amountOfColumns; indexX++) {
         const brick = new Brick(
           this.canvas.getContext("2d"),
-          indexX * (BRICK_WIDTH + BRICK_SPACING),
+          indexX * (BRICK_WIDTH + BRICK_SPACING) + bricksOffsetX,
           indexY * (BRICK_HEIGHT + BRICK_SPACING)
         );
         this.bricks.push(brick);
