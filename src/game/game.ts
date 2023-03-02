@@ -1,4 +1,5 @@
 import { GameState } from "./game-config";
+import { isEnded, isPaused, isPlaying } from "./utils/isGameState";
 import { Ball, BALL_SIZE, BALL_SPEED } from "../ball";
 import { Paddle, PADDLE_FRICTION, PADDLE_SPEED, PADDLE_WIDTH } from "../paddle";
 import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
@@ -94,7 +95,7 @@ export class Game {
     this.collisionDetection();
     this.clear();
     this.draw();
-    if (this.gameState === GameState.PLAY) {
+    if (isPlaying(this.gameState)) {
       this.startGameLoop();
     }
   }
@@ -226,11 +227,7 @@ export class Game {
 
   public canPause() {
     // Cannot pause the game, when you already lost
-    return this.gameState !== GameState.ENDED;
-  }
-
-  public isPaused() {
-    return this.gameState === GameState.PAUSE;
+    return !isEnded(this.gameState);
   }
 
   public togglePause() {
@@ -238,11 +235,11 @@ export class Game {
       return;
     }
 
-    const newGameState = this.isPaused() ? GameState.PLAY : GameState.PAUSE;
-    if (newGameState === GameState.PLAY) {
+    const isCurrentlyPaused = isPaused(this.gameState);
+    if (isCurrentlyPaused) {
       this.startGameLoop();
     }
-    this.updateGameState(newGameState);
+    this.updateGameState(isCurrentlyPaused ? GameState.PLAY : GameState.PAUSE);
   }
 
   private updateGameState(gameState: GameState) {

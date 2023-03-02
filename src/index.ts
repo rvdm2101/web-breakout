@@ -1,5 +1,6 @@
 import { Game } from "./game";
 import "./style/index.scss";
+import { isPlaying } from "./game/utils/isGameState";
 
 /**
  * Create canvas inside the provided container
@@ -27,24 +28,17 @@ const generateGame: TGenerateGame = (elementSelector) => {
   const game = new Game(canvas);
   game.start();
   game.gameStateListener((gameState) => {
-    console.log(gameState);
-    togglePauseButton();
+    if (!game.canPause()) {
+      return;
+    }
+    togglePauseButton(isPlaying(gameState));
   });
 
-  pauseButton.addEventListener("click", () => {
-    game.togglePause();
-    togglePauseButton();
-  });
+  pauseButton.addEventListener("click", () => game.togglePause());
 
-  const togglePauseButton = () => {
-    pauseButton.classList.toggle(
-      "pause-button--state-paused",
-      !game.isPaused()
-    );
-    pauseButton.classList.toggle(
-      "pause-button--state-playing",
-      game.isPaused()
-    );
+  const togglePauseButton = (toPause: boolean) => {
+    pauseButton.classList.toggle("pause-button--state-paused", toPause);
+    pauseButton.classList.toggle("pause-button--state-playing", !toPause);
   };
 };
 
