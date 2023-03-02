@@ -44,7 +44,7 @@ export class Game {
   }
 
   public start() {
-    this.gameState = GameState.PLAY;
+    this.updateGameState(GameState.PLAY);
     this.addControls();
     this.startGameLoop();
   }
@@ -172,12 +172,12 @@ export class Game {
 
   private gameWon() {
     alert("Game over, you won!");
-    this.gameState = GameState.ENDED;
+    this.updateGameState(GameState.ENDED);
   }
 
   private gameLost() {
     alert("Game over, you lost!");
-    this.gameState = GameState.ENDED;
+    this.updateGameState(GameState.ENDED);
   }
 
   private bounceBall(bounce: THitAndBounce) {
@@ -242,14 +242,20 @@ export class Game {
     if (newGameState === GameState.PLAY) {
       this.startGameLoop();
     }
-    this.gameState = newGameState;
-    this.gameStateListener(newGameState);
+    this.updateGameState(newGameState);
   }
 
-  private gameStateListener(gameState: GameState) {}
-  public registerGameStateListener(
+  private updateGameState(gameState: GameState) {
+    this.gameState = gameState;
+    this.gameStateListenerTrigger(gameState);
+  }
+
+  // @TODO feels weird. Maybe just better to use something like eventBus (or create my own custom events listener)
+  // Trigger for the gameStateListener
+  private gameStateListenerTrigger(_gameState: GameState) {}
+  public gameStateListener(
     externalListenerFunction: (gameState: GameState) => void
   ) {
-    this.gameStateListener = externalListenerFunction;
+    this.gameStateListenerTrigger = externalListenerFunction;
   }
 }

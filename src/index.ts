@@ -26,7 +26,10 @@ const generateGame: TGenerateGame = (elementSelector) => {
   container.appendChild(pauseButton);
   const game = new Game(canvas);
   game.start();
-  game.registerGameStateListener(() => togglePauseButton());
+  game.gameStateListener((gameState) => {
+    console.log(gameState);
+    togglePauseButton();
+  });
 
   pauseButton.addEventListener("click", () => {
     game.togglePause();
