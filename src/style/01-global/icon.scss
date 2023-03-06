@@ -1,0 +1,25 @@
+.web-breakout .icon {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  &--close::after {
+    background-image: url("/public/icons/close.svg");
+  }
+  &--play::after {
+    background-image: url("/public/icons/play.svg");
+  }
+  &--pause::after {
+    background-image: url("/public/icons/pause.svg");
+  }
+}

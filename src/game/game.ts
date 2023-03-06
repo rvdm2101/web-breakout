@@ -172,12 +172,10 @@ export class Game {
   }
 
   private gameWon() {
-    alert("Game over, you won!");
     this.updateGameState(GameState.ENDED);
   }
 
   private gameLost() {
-    alert("Game over, you lost!");
     this.updateGameState(GameState.ENDED);
   }
 

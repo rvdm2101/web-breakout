@@ -1,0 +1,33 @@
+@import "../01-global/global";
+
+.web-breakout .button {
+  padding: $spacing-sm;
+  border: solid transparent 1px;
+  color: white;
+  font-weight: 500;
+
+  &--primary {
+    background: $primary-500;
+    border-color: $primary-700;
+    border-radius: $border-radius-sm;
+
+    &:hover,
+    &:focus {
+      background: $primary-700;
+    }
+  }
+
+  &--ghost {
+    color: $primary-700;
+    background: transparent;
+
+    &:hover,
+    &:focus {
+      border-color: $primary-700;
+    }
+  }
+
+  &--round {
+    border-radius: 10rem;
+  }
+}

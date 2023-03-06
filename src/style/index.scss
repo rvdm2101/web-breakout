@@ -1,1 +1,11 @@
-@import "pause-button";
+@import "01-global/colors";
+@import "01-global/fonts";
+@import "01-global/global";
+@import "01-global/icon";
+@import "01-global/typograpy";
+@import "01-global/variables";
+
+@import "02-atom/button";
+@import "02-atom/pause-button";
+
+@import "04-organism/modal";
