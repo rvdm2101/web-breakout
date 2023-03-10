@@ -5,7 +5,9 @@
         <title>Web breakout example</title>
     </head>
     <body>
-        <div id="game-container"></div>
+        <div>
+            <div id="game-container" style="width: 1000px; height: 650px; margin: 0 auto;"></div>
+        </div>
         <script type="module">
             import generateGame from "./dist/main.mjs";
             generateGame("#game-container");

@@ -13,11 +13,18 @@ const generateGame: TGenerateGame = (elementSelector) => {
     alert("Container element not found");
     return;
   }
+
+  generateElements(container);
+  createGame(container);
+};
+
+// Generate the basic html elements
+const generateElements = (container: HTMLElement) => {
   container.classList.add("web-breakout");
 
   const canvas = document.createElement("canvas");
-  canvas.width = container.clientWidth;
-  canvas.height = (canvas.width / 16) * 9;
+  canvas.width = container.clientWidth - 2; // -2 for border
+  canvas.height = container.clientHeight - 2; // -2 for border
   canvas.style.border = "1px solid black";
 
   const pauseButton = document.createElement("button");
@@ -25,11 +32,17 @@ const generateGame: TGenerateGame = (elementSelector) => {
 
   container.appendChild(canvas);
   container.appendChild(pauseButton);
+};
+
+const createGame = (container: HTMLElement) => {
+  const canvas = container.querySelector("canvas");
+  const pauseButton = container.querySelector(".pause-button");
+
   const game = new Game(canvas);
   game.start();
   game.gameStateListener((gameState) => {
     if (isEnded(gameState)) {
-      renderEndGameScreen();
+      renderEndGameScreen(container);
       return;
     }
     togglePauseButton(isPlaying(gameState));
@@ -41,16 +54,25 @@ const generateGame: TGenerateGame = (elementSelector) => {
     pauseButton.classList.toggle("pause-button--state-paused", toPause);
     pauseButton.classList.toggle("pause-button--state-playing", !toPause);
   };
+};
 
-  const renderEndGameScreen = () => {
-    const endGameScreen = document.createElement("div");
-    const title = "You lost!";
-    const message = "You lost the game. Would you like to try again?";
-    endGameScreen.classList.add("end-game-screen");
-    endGameScreen.innerHTML = `<div class="modal"><div class="modal__container"><div class="modal__header"><h2 class="modal__title">${title}</h2><button class="button button--ghost icon icon--close modal__close-button"></button></div><div class="modal__content"><p class="modal__message">${message}</p></div><div class="modal__footer"><button class="button button--primary">Try again</button></div></div></div>`;
+const renderEndGameScreen = (container: HTMLElement) => {
+  const endGameScreen = document.createElement("div");
+  const title = "You lost!";
+  const message = "You lost the game. Would you like to try again?";
 
-    container.appendChild(endGameScreen);
+  const startAgain = () => {
+    container.querySelector(".end-game-screen").remove();
+    createGame(container);
   };
+
+  endGameScreen.classList.add("end-game-screen");
+  endGameScreen.innerHTML = `<div class="modal"><div class="modal__container"><div class="modal__header"><h2 class="modal__title">${title}</h2></div><div class="modal__content"><p class="modal__message">${message}</p></div><div class="modal__footer"><button id="action_try-again" class="button button--primary">Try again</button></div></div></div>`;
+  endGameScreen
+    .querySelector("#action_try-again")
+    .addEventListener("click", startAgain);
+
+  container.appendChild(endGameScreen);
 };
 
 export default generateGame;
