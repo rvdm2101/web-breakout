@@ -15,7 +15,7 @@ const generateGame: TGenerateGame = (elementSelector) => {
   }
 
   generateElements(container);
-  createGame(container);
+  renderStartGameScreen(container);
 };
 
 // Generate the basic html elements
@@ -56,23 +56,60 @@ const createGame = (container: HTMLElement) => {
   };
 };
 
+const startGame = (container: HTMLElement) => {
+  container.querySelector(".game-screen").remove();
+  createGame(container);
+};
+
+const renderStartGameScreen = (container: HTMLElement) => {
+  const title = "Wanna play breakout?";
+  const message = "Click the button below to start the game";
+
+  const start = () => startGame(container);
+
+  const gameScreen = renderGameScreen(
+    container,
+    title,
+    `<p class="modal__message">${message}</p>`,
+    `<button id="action_start-game" class="button button--primary">Start game</button>`
+  );
+
+  gameScreen
+    .querySelector("#action_start-game")
+    .addEventListener("click", start);
+};
+
 const renderEndGameScreen = (container: HTMLElement) => {
-  const endGameScreen = document.createElement("div");
   const title = "You lost!";
   const message = "You lost the game. Would you like to try again?";
 
-  const startAgain = () => {
-    container.querySelector(".end-game-screen").remove();
-    createGame(container);
-  };
+  const startAgain = () => startGame(container);
 
-  endGameScreen.classList.add("end-game-screen");
-  endGameScreen.innerHTML = `<div class="modal"><div class="modal__container"><div class="modal__header"><h2 class="modal__title">${title}</h2></div><div class="modal__content"><p class="modal__message">${message}</p></div><div class="modal__footer"><button id="action_try-again" class="button button--primary">Try again</button></div></div></div>`;
-  endGameScreen
+  const gameScreen = renderGameScreen(
+    container,
+    title,
+    `<p class="modal__message">${message}</p>`,
+    `<button id="action_try-again" class="button button--primary">Try again</button>`
+  );
+
+  gameScreen
     .querySelector("#action_try-again")
     .addEventListener("click", startAgain);
+};
 
-  container.appendChild(endGameScreen);
+const renderGameScreen = (
+  container: HTMLElement,
+  title: string,
+  content: string,
+  actions: string
+): HTMLDivElement => {
+  const gameScreenModal = document.createElement("div");
+
+  gameScreenModal.classList.add("modal", "game-screen");
+  gameScreenModal.innerHTML = `<div class="modal__container"><div class="modal__header"><h2 class="modal__title">${title}</h2></div><div class="modal__content">${content}</div><div class="modal__footer">${actions}</div></div>`;
+
+  container.appendChild(gameScreenModal);
+  return gameScreenModal;
 };
 
 export default generateGame;
