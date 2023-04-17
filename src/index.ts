@@ -1,6 +1,5 @@
-import { Game } from "./game";
+import { Game, isEnded, isPlaying } from "@web-breakout/game";
 import "./style/index.scss";
-import { isEnded, isPlaying } from "./game/utils/isGameState";
 
 /**
  * Create canvas inside the provided container

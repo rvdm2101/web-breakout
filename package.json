@@ -24,6 +24,9 @@
     "node": "^18.0.0"
   },
   "homepage": "https://github.com/rvdm2101/web-breakout#readme",
+  "workspaces": [
+    "packages/**"
+  ],
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@webpack-cli/generators": "^3.0.1",

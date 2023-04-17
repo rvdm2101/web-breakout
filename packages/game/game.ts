@@ -1,14 +1,24 @@
 import { GameState } from "./game-config";
 import { isEnded, isPaused, isPlaying } from "./utils/isGameState";
-import { Ball, BALL_SIZE, BALL_SPEED } from "../ball";
-import { Paddle, PADDLE_FRICTION, PADDLE_SPEED, PADDLE_WIDTH } from "../paddle";
-import { Brick, BRICK_HEIGHT, BRICK_SPACING, BRICK_WIDTH } from "../brick";
+import { Ball, BALL_SIZE, BALL_SPEED } from "@web-breakout/ball";
+import {
+  Paddle,
+  PADDLE_FRICTION,
+  PADDLE_SPEED,
+  PADDLE_WIDTH,
+} from "@web-breakout/paddle";
+import {
+  Brick,
+  BRICK_HEIGHT,
+  BRICK_SPACING,
+  BRICK_WIDTH,
+} from "@web-breakout/brick";
 import {
   containsKeyLeft,
   containsKeyRight,
   KEY_SPACE_BAR,
   shouldListenToKey,
-} from "../utils/isKey";
+} from "../utils/isKey"; // @TODO @web-breakout/util
 
 export class Game {
   private paddleMovementX: number = 0;
